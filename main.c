@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include <limits.h> 
 
 typedef struct Graph{
     int V;
@@ -17,14 +19,14 @@ int **alocaMatriz(int r, int c){
     int i, j;
     int **m = malloc(r * sizeof(int *));
     if(m == NULL) return NULL; //memória insuficiente
-        for (i = 0; i < r; i++){
-            m[i] = malloc((c * sizeof(int)));
-            if(m[i] == NULL){ //memoria insuficiente
-            	for(j = 0; j < i; j++) free(m[j]);
-            	free(m);
-            	return NULL;
-        	}
-        }
+    for (i = 0; i < r; i++){
+        m[i] = malloc((c * sizeof(int)));
+        if(m[i] == NULL){ //memoria insuficiente
+        	for(j = 0; j < i; j++) free(m[j]);
+        	free(m);
+        	return NULL;
+    	}
+    }
     for(i = 0; i < r; i++) //preenchendo os espaços com zero
         for(j = 0; j < c; j++)
             m[i][j] = 0;
@@ -66,49 +68,78 @@ Graph GRAPHInit(){
     if(G->custos == NULL) return NULL; //memória insuficiente
     for(i = 0; i < G->A; i++){
     	fscanf(arquivo, "%d %d %d", &u, &v, &custo);
-		GRAPHInsert(G, u, v, i, custo); 
+		GRAPHInsert(G, u-1, v-1, i, custo);
 	}
 	fclose(arquivo);
     return G;
 }
 
-int naFronteira(int *front, int a){
-	int i;
-	for(i = 0; i < a; i++)
-		if(front[i] == 1)
-			return 1;
-	return 0;
-}
-
-int arestaCustoMinimo(int *front, int *z, int *custos, int a, int v){
-	int i;
-	for(i = 0; i < a; i++){
-		
+int minValor(int chave[], bool z[], int V) 
+{ 
+    // Initialize min value 
+    int min = INT_MAX, min_index = 0, v;
+  
+    for (v = 0; v < V; v++){
+        if (z[v] == false && chave[v] < min){
+            min = chave[v];
+			min_index = v;
+		}
 	}
+    return min_index; 
+} 
+
+void printArvore(int *ant, int *chave, int V){
+	int i, custo = 0; 
+	printf("Arvore geradora minima: ");
+	for(i = 1; i < V; i++){
+		printf("(%d, %d) ", ant[i]+1, i+1);
+		custo += chave[i];
+	}
+	printf("\nCusto: %d", custo);
 }
 
 void algPrim(Graph G){
-	int z[G->V], front[G->A], i, totalCusto = 0;
-	for(i = 0; i < G->V; i++)
-		z[i] = 0;
-	for(i = 0; i < G->A; i++)
-		front[i] = 0;
-	z[0] = 1;
-	for(i = 0; i < G->A; i++)
-		if(G->M[1][i] == 1)
-			front[i] = 1;
-	while(naFronteira(front, G->A)){
-		
+	int ant[G->V];
+	int chave[G->V];
+	bool z[G->V];
+	int i, v, a;
+	
+	for(i = 0; i < G->V; i++) {
+		z[i] = false;
+		chave[i] = INT_MAX;
 	}
+	
+	chave[0] = 0;
+	ant[0] = -1;
+	
+	for(i = 0; i < G->V-1; i++){	
+		int u = minValor(chave, z, G->V);
+		printf("\n u = %d", u);
+		z[u] = true;
+		
+		for(a = 0; a < G->A; a++){
+			for(v = 0; v < G->V; v++){
+				if(z[v] == false && 
+				G->M[u][a] == G->M[v][a] == 1 && 
+				G->custos[a] < chave[v]){
+					ant[v] = u; 
+					chave[v] = G->custos[a];
+					break;
+				}
+			}
+		}
+	}
+	printArvore(ant, chave, G->V);	
 }
 
 int main() {
-    //Graph G = GRAPHInit();
-    int a = 5;
-    int front[5] = {0, 0, 0, 0, 0};
-    if(naFronteira(front, a)) printf("tem aresta na fronteira");
-    else printf("não tem fronteira");
-    
+    //int i;
+	Graph G = GRAPHInit();
+//	if(G == NULL) printf("n tem grafo");
+//	printf("(V = %d; A = %d)\n", G->V, G->A);
+//	for(i = 0; i < G->A; i++)
+//		printf("%d ", G->custos[i]);
+	algPrim(G);
     
     return 0;
 }
