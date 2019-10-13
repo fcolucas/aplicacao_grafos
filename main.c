@@ -88,6 +88,14 @@ int minValor(int chave[], bool z[], int V)
     return min_index; 
 } 
 
+bool conjZ(bool *z, int V){
+	int v;
+	for(v = 0; v < V; v++){
+		if(!z[v]) return true;
+	}
+	return false;
+}
+
 void printArvore(int *ant, int *chave, int V){
 	int i, custo = 0; 
 	printf("Arvore geradora minima: ");
@@ -112,9 +120,9 @@ void algPrim(Graph G){
 	chave[0] = 0;
 	ant[0] = -1;
 	
-	for(i = 0; i < G->V-1; i++){	
+	while(conjZ(z, G->V)){
 		int u = minValor(chave, z, G->V);
-		printf("\n u = %d", u);
+		printf("%d \n", u);
 		z[u] = true;
 		
 		for(a = 0; a < G->A; a++){
@@ -124,7 +132,6 @@ void algPrim(Graph G){
 				G->custos[a] < chave[v]){
 					ant[v] = u; 
 					chave[v] = G->custos[a];
-					break;
 				}
 			}
 		}
