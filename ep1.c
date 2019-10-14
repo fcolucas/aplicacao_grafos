@@ -18,24 +18,24 @@ typedef struct Graph{
     int **M; //Matriz de adjacências de G
 }*Graph;
 
-int **alocaMatriz(int r){
-    /* A função retorna uma matriz de adjacências r x r,
-     * onde r é o número de vértices de G.
-     * e preenche os espaços com zero.
+int **alocaMatriz(int v){
+    /* A função retorna uma matriz de adjacências v x v,
+     * onde v é o número de vértices de G.
+     * e preenche os espaços com infinito.
     */
     int i, j;
-    int **m = malloc(r * sizeof(int *));
+    int **m = malloc(v * sizeof(int *));
     if(m == NULL) return NULL; //memória insuficiente
-    for (i = 0; i < r; i++){
-        m[i] = malloc((r * sizeof(int)));
+    for (i = 0; i < v; i++){
+        m[i] = malloc((v * sizeof(int)));
         if(m[i] == NULL){ //memória insuficiente
             for(j = 0; j < i; j++) free(m[j]);
             free(m);
             return NULL;
         }
     }
-    for(i = 0; i < r; i++) //preenchendo os espaços com zero
-        for(j = 0; j < r; j++)
+    for(i = 0; i < v; i++) //preenchendo os espaços com zero
+        for(j = 0; j < v; j++)
             m[i][j] = INT_MAX;
 
     return m;
@@ -79,7 +79,7 @@ Graph GRAPHInit(){
     }
     fclose(arquivo);
     return G;
-}
+}//GRAPHinit()
 
 int minValor(int chave[], bool z[], int V) {
     /* A função encontra o vértice com valor mínimo de chave, do conjunto de
@@ -94,7 +94,7 @@ int minValor(int chave[], bool z[], int V) {
         }
     }
     return min_index;
-}
+}//minValor()
 
 bool conjZ(bool *z, int V){
     /* A função verifica se todos os vertices de G estão em Z.
@@ -106,7 +106,7 @@ bool conjZ(bool *z, int V){
         if(!z[v]) return true;
     }
     return false;
-}
+}//conjZ()
 
 void printArvore(int *ant, int *chave, int V){
     /* A função imprime a árvore geradora mínima construída pelo
@@ -119,7 +119,7 @@ void printArvore(int *ant, int *chave, int V){
         custo += chave[i];
     }
     printf("\nCusto: %d", custo);
-}
+}//printArvore()
 
 void algPrim(Graph G){
     /* A função constroi e imprime uma árvore geradora minima (AGM)
@@ -158,7 +158,7 @@ void algPrim(Graph G){
     }
     //Ao final, imprime a AGM construída
     printArvore(ant, chave, G->V);
-}
+}//algPrim()
 
 int main() {
     
@@ -167,4 +167,4 @@ int main() {
     algPrim(G);
 
     return 0;
-}
+}//main()
