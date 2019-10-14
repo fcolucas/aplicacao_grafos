@@ -34,7 +34,7 @@ int **alocaMatriz(int v){
             return NULL;
         }
     }
-    for(i = 0; i < v; i++) //preenchendo os espaços com zero
+    for(i = 0; i < v; i++) //preenchendo os espaços com infinito
         for(j = 0; j < v; j++)
             m[i][j] = INT_MAX;
 
