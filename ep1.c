@@ -1,7 +1,7 @@
-/*1º Exercício-Programa de Grafos
+/*1Âº ExercÃ­cio-Programa de Grafos
  * Prof.: Glauber Cintra
  * Equipe: Francisco Lucas Lima da Silva
- *         José Alcides Mendes da Silva Júnior
+ *         JosÃ© Alcides Mendes da Silva JÃºnior
  *         Juliana Silva Cardoso
  *         Rodrigo Alonso Caldas
  * */
@@ -13,28 +13,28 @@
 #include <limits.h>
 
 typedef struct Graph{
-    int V; //Número de vértices de G
-    int A; //Número de arestas de G
-    int **M; //Matriz de incidências de G
+    int V; //NÃºmero de vÃ©rtices de G
+    int A; //NÃºmero de arestas de G
+    int **M; //Matriz de adjacÃªncias de G
 }*Graph;
 
 int **alocaMatriz(int r){
-    /* A função retorna uma matriz de adjacências r x r,
-     * onde r é o número de vértices de G.
-     * e preenche os espaços com zero.
+    /* A funÃ§Ã£o retorna uma matriz de adjacÃªncias r x r,
+     * onde r Ã© o nÃºmero de vÃ©rtices de G.
+     * e preenche os espaÃ§os com zero.
     */
     int i, j;
     int **m = malloc(r * sizeof(int *));
-    if(m == NULL) return NULL; //memória insuficiente
+    if(m == NULL) return NULL; //memÃ³ria insuficiente
     for (i = 0; i < r; i++){
         m[i] = malloc((r * sizeof(int)));
-        if(m[i] == NULL){ //memória insuficiente
+        if(m[i] == NULL){ //memÃ³ria insuficiente
             for(j = 0; j < i; j++) free(m[j]);
             free(m);
             return NULL;
         }
     }
-    for(i = 0; i < r; i++) //preenchendo os espaços com zero
+    for(i = 0; i < r; i++) //preenchendo os espaÃ§os com zero
         for(j = 0; j < r; j++)
             m[i][j] = INT_MAX;
 
@@ -42,36 +42,36 @@ int **alocaMatriz(int r){
 }//alocaMatriz()
 
 void GRAPHInsert(Graph G, int u, int v, int custo){
-    /* A função insere uma aresta uv na matriz de incidências
+    /* A funÃ§Ã£o insere uma aresta uv na matriz de incidÃªncias
      * e guarda o custo da aresta no vetor de custos.
     */
-    if(G->M[u][v] != custo || G->M[v][u] != custo){ //Verifica se já não há tal aresta
+    if(G->M[u][v] != custo || G->M[v][u] != custo){ //Verifica se jÃ¡ nÃ£o hÃ¡ tal aresta
         G->M[u][v] = custo;
         G->M[v][u] = custo;
     }
 }//GRAPHInsert()
 
 Graph GRAPHInit(){
-    /* A função lê um arquivo que contém o número de vértices e
+    /* A funÃ§Ã£o lÃª um arquivo que contÃ©m o nÃºmero de vÃ©rtices e
      * de arestas de G, as arestas uv de G e seus respectivos custos.
     */
     Graph G = malloc(sizeof (*G)); //Ponteiro para G
     FILE *arquivo = NULL;
     char caminhoDoArquivo[50];
-    int i, u, v, custo; //Váriáveis para laço e váriaveis para criar G
+    int i, u, v, custo; //VÃ¡riÃ¡veis para laÃ§o e vÃ¡riaveis para criar G
 
     while(arquivo == NULL){
         printf("Insira o caminho do arquivo e pressione Enter: \n");
         fgets(caminhoDoArquivo, sizeof(caminhoDoArquivo), stdin);
-        //Remove o último caractere do caminho, pois o fgets armazena a quebra de linha '\n'
+        //Remove o Ãºltimo caractere do caminho, pois o fgets armazena a quebra de linha '\n'
         char *p_chr = strchr(caminhoDoArquivo, '\n');
         if(p_chr != NULL)
             *p_chr = '\0';
         arquivo = fopen(caminhoDoArquivo, "r");
     }
-    fscanf(arquivo, "%d %d", &G->V, &G->A); //Lê a primeira linha do arquivo
+    fscanf(arquivo, "%d %d", &G->V, &G->A); //LÃª a primeira linha do arquivo
     G->M = alocaMatriz(G->V); // Cria matriz V x V
-    if(G->M == NULL) return NULL; //memória insuficiente
+    if(G->M == NULL) return NULL; //memÃ³ria insuficiente
 
     for(i = 0; i < G->A; i++){
         fscanf(arquivo, "%d %d %d", &u, &v, &custo);
@@ -82,8 +82,8 @@ Graph GRAPHInit(){
 }
 
 int minValor(int chave[], bool z[], int V) {
-    /* A função encontra o vértice com valor mínimo de chave, do conjunto de
-     * vértices que ainda não estão em Z.
+    /* A funÃ§Ã£o encontra o vÃ©rtice com valor mÃ­nimo de chave, do conjunto de
+     * vÃ©rtices que ainda nÃ£o estÃ£o em Z.
      * */
     int min = INT_MAX, min_index = 0, v;
 
@@ -97,9 +97,9 @@ int minValor(int chave[], bool z[], int V) {
 }
 
 bool conjZ(bool *z, int V){
-    /* A função verifica se todos os vertices de G estão em Z.
-     * Retorna true se possui algum vértice que não está em Z.
-     * Retorna false se todos os vértices estão em Z.
+    /* A funÃ§Ã£o verifica se todos os vertices de G estÃ£o em Z.
+     * Retorna true se possui algum vÃ©rtice que nÃ£o estÃ¡ em Z.
+     * Retorna false se todos os vÃ©rtices estÃ£o em Z.
      * */
     int v;
     for(v = 0; v < V; v++){
@@ -109,7 +109,7 @@ bool conjZ(bool *z, int V){
 }
 
 void printArvore(int *ant, int *chave, int V){
-    /* A função imprime a árvore geradora mínima construída pelo
+    /* A funÃ§Ã£o imprime a Ã¡rvore geradora mÃ­nima construÃ­da pelo
     algoritmo de Prim.
     */
     int i, custo = 0;
@@ -122,12 +122,12 @@ void printArvore(int *ant, int *chave, int V){
 }
 
 void algPrim(Graph G){
-    /* A função constroi e imprime uma árvore geradora minima (AGM)
-     * para um grafo G representado por uma matriz de adjacências
+    /* A funÃ§Ã£o constroi e imprime uma Ã¡rvore geradora minima (AGM)
+     * para um grafo G representado por uma matriz de adjacÃªncias
      * */
     int ant[G->V]; //Vetor para armazenar a AGM
-    int chave[G->V]; //Vetor que armazena os custos mínimos da fronteira de cada vértice
-    bool z[G->V]; //Vetor que armazena os vértices inseridos no conjunto Z
+    int chave[G->V]; //Vetor que armazena os custos mÃ­nimos da fronteira de cada vÃ©rtice
+    bool z[G->V]; //Vetor que armazena os vÃ©rtices inseridos no conjunto Z
     int i, j, v;
 
     for(i = 0; i < G->V; i++) { //Iniciando vetores
@@ -135,20 +135,20 @@ void algPrim(Graph G){
         chave[i] = INT_MAX;
     }
 
-    //O vértice 0 será a raiz da AGM
+    //O vÃ©rtice 0 serÃ¡ a raiz da AGM
     chave[0] = 0;
     ant[0] = -1;
 
-    //Enquanto existir vértice não inserido em Z
+    //Enquanto existir vÃ©rtice nÃ£o inserido em Z
     while(conjZ(z, G->V)){
         int u = minValor(chave, z, G->V); //Busca o indice com aresta de menor custo na fronteira
         z[u] = true; //Insere u em Z
 
-        //Atualize o valor da chave e o índice anterior dos vértices adjacentes ao vértice selecionado.
-        //Considere apenas os vértices que ainda não estão incluídos na AGM
+        //Atualize o valor da chave e o Ã­ndice anterior dos vÃ©rtices adjacentes ao vÃ©rtice selecionado.
+        //Considere apenas os vÃ©rtices que ainda nÃ£o estÃ£o incluÃ­dos na AGM
         for(v = 0; v < G->V; v++){
-            //O grafo[u][v] é diferente de zero apenas para vértices adjacentes de m
-            //z[v] é falso para vértices ainda não incluídos na AGM
+            //O grafo[u][v] Ã© diferente de zero apenas para vÃ©rtices adjacentes de m
+            //z[v] Ã© falso para vÃ©rtices ainda nÃ£o incluÃ­dos na AGM
             //Atualize a chave apenas se o grafo[u][v] for menor que chave[v]
             if(G->M[u][v] && z[v] == false && G->M[u][v] <= chave[v]){
                 ant[v] = u;
@@ -156,7 +156,7 @@ void algPrim(Graph G){
             }
         }
     }
-    //Ao final, imprime a AGM construída
+    //Ao final, imprime a AGM construÃ­da
     printArvore(ant, chave, G->V);
 }
 
