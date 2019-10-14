@@ -1,4 +1,4 @@
-/*1º Exercício-Programa de Grafos
+ /*1º Exercício-Programa de Grafos
  * Prof.: Glauber Cintra
  * Equipe: Francisco Lucas Lima da Silva
  *         José Alcides Mendes da Silva Júnior
@@ -115,7 +115,7 @@ void printArvore(int *ant, int *chave, int V){
     int i, custo = 0;
     printf("\nArvore geradora minima: ");
     for(i = 1; i < V; i++){
-        printf("(%d, %d) ", ant[i]+1, i+1);
+        printf("(%d, %d) ",i+1, ant[i]+1);
         custo += chave[i];
     }
     printf("\nCusto: %d", custo);
@@ -161,7 +161,6 @@ void algPrim(Graph G){
 }//algPrim()
 
 int main() {
-    
     Graph G = GRAPHInit();
 
     algPrim(G);
